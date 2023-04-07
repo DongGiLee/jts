@@ -1,8 +1,9 @@
-package com.mysite.jts;
+package com.mysite.jts.question;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.mysite.jts.answer.Answer;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

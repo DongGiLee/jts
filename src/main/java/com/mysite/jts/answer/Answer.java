@@ -1,5 +1,6 @@
-package com.mysite.jts;
+package com.mysite.jts.answer;
 
+import com.mysite.jts.question.Question;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

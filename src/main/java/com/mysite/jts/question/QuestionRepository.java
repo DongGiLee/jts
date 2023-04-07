@@ -1,6 +1,6 @@
-package com.mysite.jts;
+package com.mysite.jts.question;
 
-/***
+/**
  * Repository
  *
  * 엔티티에 의해 생성된 데이터베이스 테이블에 접근하는 메서드들 (Ex_ findAll, save 등)을 사용하기 위한 인터페이스이다.
@@ -10,11 +10,19 @@ package com.mysite.jts;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 // JpaRepository를 상속할때는 제네릭스타입으로 <Question, Integer> 처럼
 // 레포지터리 대상이 되는 엔티티의 타입 (Question)과 해당 엔티티의 PK의 속성타입(Integer)를 지정해야한다.
 // 이것은 JpaRepository를 생성하기위한 규칙이다.
 
 public interface QuestionRepository extends JpaRepository<Question, Integer> {
 
+    List<Question> findBySubject(String subject);
 
+    List<Question> findBySubjectAndContent(String subject, String content);
+
+    List<Question> findBySubjectAndContentAndId(String subject, String content, Integer id);
+
+    List<Question> findBySubjectLike(String subject);
 }
