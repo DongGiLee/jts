@@ -1,5 +1,6 @@
 package com.mysite.jts.question;
 
+import com.mysite.jts.answer.AnswerForm;
 import com.mysite.jts.answer.AnswerService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -9,7 +10,8 @@ import java.util.List;
 import org.springframework.ui.Model;
 
 import lombok.RequiredArgsConstructor;
-
+import jakarta.validation.Valid;
+import org.springframework.validation.BindingResult;
 /**
  * @RequiredArgsConstructor : final이 붙은 속성을 포함하는 생성자를 자동으로 생성한다. 따라서 스프링 의존성 주입규칙에 의해 questionRepository 객체가 자동으로 주입된다.
  *
@@ -43,7 +45,7 @@ public class QuestionController {
     }
 
     @GetMapping("/detail/{id}")
-    public String detail(Model model, @PathVariable("id") Integer id) {
+    public String detail(Model model, @PathVariable("id") Integer id, AnswerForm answerForm) {
         Question question = this.questionService.getQuestion(id);
 
         model.addAttribute("question",question);
@@ -51,14 +53,22 @@ public class QuestionController {
         return "question_detail";
     }
 
-    @GetMapping("create")
-    public String questionCreate() {
+    @GetMapping("/create")
+    public String questionCreate(QuestionForm questionForm) {
         return "question_form";
     }
 
-    @PostMapping("create")
-    public String questionCreate(@RequestParam String subject, @RequestParam String content) {
-        // TODO: 질문을 저장한다.
+    /**
+     * BindingResult 매개변수는 항상 @Valid 매개변수 바로뒤에 위치해야한다.
+     * 만약 2개의 매개변수의 위치가 정확하지않다면 @Valid만 적용이 되어 입력값 검증 실패 시 400 오류가 발생한다.
+     *
+     * */
+    @PostMapping("/create")
+    public String questionCreate(@Valid QuestionForm questionForm, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "question_form";
+        }
+        this.questionService.create(questionForm.getSubject(), questionForm.getContent());
         return "redirect:/question/list";
     }
 }

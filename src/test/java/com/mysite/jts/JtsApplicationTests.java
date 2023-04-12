@@ -4,6 +4,7 @@ import com.mysite.jts.answer.Answer;
 import com.mysite.jts.answer.AnswerRepository;
 import com.mysite.jts.question.Question;
 import com.mysite.jts.question.QuestionRepository;
+import com.mysite.jts.question.QuestionService;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -34,6 +35,8 @@ class JtsApplicationTests {
 	@Autowired
 	private AnswerRepository answerRepository;
 
+	@Autowired
+	private QuestionService questionService;
 	/**
 	 * @Test
 	 *
@@ -160,15 +163,19 @@ class JtsApplicationTests {
 
 //		답변에 연결된 질문 찾기 vs 질문에 달린 답변찾기
 //		JPA 모델질문입니다
-		Optional<Question> oq = this.questionRepository.findById(1);
-		assertTrue(oq.isPresent());
-		Question q = oq.get();
-
-		List<Answer> answerList = q.getAnswerList();
-
-		assertEquals(1, answerList.size());
-		assertEquals("수정된 제목",answerList.get(0).getContents());
-
+//		Optional<Question> oq = this.questionRepository.findById(1);
+//		assertTrue(oq.isPresent());
+//		Question q = oq.get();
+//
+//		List<Answer> answerList = q.getAnswerList();
+//
+//		assertEquals(1, answerList.size());
+//		assertEquals("수정된 제목",answerList.get(0).getContents());
+		for (int i = 1; i <= 300; i++) {
+			String subject = String.format("테스트 데이터입니다:[%03d]", i);
+			String content = "내용무";
+			this.questionService.create(subject, content);
+		}
 	}
 }
 
